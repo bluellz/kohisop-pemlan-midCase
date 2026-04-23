@@ -15,7 +15,7 @@ public class InputHandler {
             }
             
             if (kodeYangUdahDipilih.contains(input)) {
-                System.out.println("Eh, lu udah input menu ini bro! Pilih menu yang lain ya.");
+                System.out.println("Jenis menu ini sudah kamu input sebelumnya, Pilih menu yang lain ya.");
                 continue; 
             }
             
