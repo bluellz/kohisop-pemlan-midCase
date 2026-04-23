@@ -3,24 +3,30 @@ import java.util.Scanner;
 public class InputHandler {
     private Scanner scanner = new Scanner(System.in);
     
-    public String readMenuCode() {
-        System.out.print("Masukkan Kode Menu (ketik 'DONE' jika selesai, 'CC' batal): ");
-        return scanner.nextLine().trim();
-    }
+   import java.util.Scanner;
+import java.util.List;
+
+public class InputHandler {
+    private Scanner scanner = new Scanner(System.in);
     
-    public int readQuantity(MenuItem item) {
+    // Tambahkan parameter List<String> buat nyimpen histori kode yang udah diinput
+    public String readMenuCode(List<String> kodeYangUdahDipilih) {
         while (true) {
-            System.out.print("Kuantitas untuk [" + item.getNama() + "] (Maks " + item.getMaxQty() + "): ");
-            String input = scanner.nextLine().trim().toUpperCase();
-            if (input.equals("CC")) return -2;
-            if (input.equals("0") || input.equals("S")) return 0;
-            int qty = 1;
-            if (!input.isEmpty()) {
-                try { qty = Integer.parseInt(input); } 
-                catch (NumberFormatException e) { System.out.println("Error: Harap masukkan angka yang valid!"); continue; }
+            System.out.print("Masukkan Kode Menu (ketik 'DONE' jika selesai, 'CC' batal): ");
+            String input = scanner.nextLine().trim().toUpperCase(); // Bikin uppercase biar gampang cocokinnya
+            
+            // Kalau user ngetik DONE atau CC, biarin lewat (jangan dicek duplikatnya)
+            if (input.equals("DONE") || input.equals("CC")) {
+                return input;
             }
-            if (qty < 0 || qty > item.getMaxQty()) { System.out.println("Error: Kuantitas tidak valid!"); continue; }
-            return qty;
+            
+            // Logika validasinya ada di sini:
+            if (kodeYangUdahDipilih.contains(input)) {
+                System.out.println("Eh, lu udah input menu ini bro! Pilih menu yang lain ya.");
+                continue; // Ngulang loop buat minta input lagi
+            }
+            
+            return input;
         }
     }
     
