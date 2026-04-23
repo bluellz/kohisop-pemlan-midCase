@@ -39,6 +39,9 @@ public class Main {
         List<String> historiKode = new ArrayList<>(); 
         List<MenuItem> selectedItems = new ArrayList<>();
         int drinkCount = 0, foodCount = 0;
+        menuDisplay.showDrinkMenu();
+        System.out.println();
+        menuDisplay.showFoodMenu();
 
         // 2. Loop Input Kode Menu
         while (true) {
