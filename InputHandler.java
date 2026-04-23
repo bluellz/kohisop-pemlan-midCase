@@ -59,8 +59,7 @@ public class InputHandler {
             String ch = scanner.next(); scanner.nextLine(); // pake scanner.nextLine() biar enter-nya ke-consume
             
             if (ch.equals("1")) return new Tunai();
-            // Asumsi penamaan class di file lain QRis atau QRIS
-            if (ch.equals("2")) return new Qris(); 
+            if (ch.equals("2")) return new QRIS(); 
             if (ch.equals("3")) return new EMoney();
             
             System.out.println("Pilihan tidak valid!");
