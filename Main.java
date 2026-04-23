@@ -33,31 +33,49 @@ public class Main {
         );
         menuDisplay = new MenuDisplay(items);
     }
-
+    
+    // BUNGKUS LOGIKANYA DI DALAM METHOD INI
     public void runOrderFlow() {
-        menuDisplay.showDrinkMenu();
-        System.out.println();
-        menuDisplay.showFoodMenu();
-        
+        List<String> historiKode = new ArrayList<>(); 
         List<MenuItem> selectedItems = new ArrayList<>();
         int drinkCount = 0, foodCount = 0;
 
+        // 2. Loop Input Kode Menu
         while (true) {
-            String code = handler.readMenuCode();
-            if (code.equalsIgnoreCase("CC")) { System.out.println("Batal. Program Berhenti."); return; }
-            if (code.equalsIgnoreCase("DONE")) break;
-
-            MenuItem item = menuDisplay.getItemByCode(code);
-            if (item == null) { System.out.println("Error: Kode tidak valid."); continue; }
+            // Panggil handler dengan mengirimkan historiKode
+            String code = handler.readMenuCode(historiKode); 
             
-            if (item instanceof Minuman) {
-                if (drinkCount < 5) { selectedItems.add(item); drinkCount++; }
-                else { System.out.println("Maksimal 5 jenis minuman tercapai!"); }
-            } else if (item instanceof Makanan) {
-                if (foodCount < 5) { selectedItems.add(item); foodCount++; }
-                else { System.out.println("Maksimal 5 jenis makanan tercapai!"); }
+            if (code.equalsIgnoreCase("CC")) {
+                System.out.println("Pesanan Dibatalkan. Program Berhenti.");
+                return;
             }
-        }
+            if (code.equalsIgnoreCase("DONE")) break; // Keluar loop kalau DONE
+
+            // Karena code dari user huruf besar/kecil bisa beda, ubah ke uppercase untuk cari menu (opsional tergantung logic getItemByCode)
+            MenuItem item = menuDisplay.getItemByCode(code);
+            
+            if (item == null) {
+                System.out.println("Error: Kode tidak valid. Silakan coba lagi.");
+                continue;
+            }
+
+            // Cek batas maksimal 5 jenis item per kategori
+            if (item instanceof Minuman) {
+                if (drinkCount >= 5) { System.out.println("Maksimal 5 jenis minuman tercapai!"); continue; }
+                drinkCount++;
+            } else {
+                if (foodCount >= 5) { System.out.println("Maksimal 5 jenis makanan tercapai!"); continue; }
+                foodCount++;
+            }
+
+            // Masukkan item ke list pesanan
+            selectedItems.add(item);
+            
+            // Catat kode yang baru saja berhasil diinput ke histori agar input berikutnya tidak duplikat
+            historiKode.add(code.toUpperCase()); 
+        } // <--- TUTUP KURUNG WHILE LOOP DI SINI, BUKAN DI BAWAH
+
+        // --- PROSES SETELAH LOOP KODE MENU SELESAI ("DONE") ---
 
         if (selectedItems.isEmpty()) {
             System.out.println("Tidak ada pesanan. Program Berhenti.");
